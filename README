@@ -1,0 +1,5 @@
+Tested with ubuntu!
+
+Copy this script to <your_rails_project_path>/script and modify at will.
+Basically automates your project setup.
+

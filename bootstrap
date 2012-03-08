@@ -1,0 +1,29 @@
+#! /bin/bash
+
+#installing dependencies
+sudo apt-get -y install build-essential libxml2-dev libxslt1-dev
+
+#installing rvm
+test rvm
+if [ $? != 0 ]; then
+  bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+  . ~/.rvmrc
+fi
+
+ls .rvmrc > /dev/null
+if [ $? != 0 ]; then
+  echo "You don't have an .rvmrc file. You should set one."
+  exit 1
+fi
+
+. "$HOME/.rvm/scripts/rvm"
+install="`cat .rvmrc | grep -F 'rvm use'` --install"
+$install
+
+#installs dependencies
+bundle
+bundle exec rake db:create:all db:migrate db:migrate db:test:prepare
+
+echo "Finished"
+
+
